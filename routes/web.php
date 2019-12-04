@@ -11,22 +11,37 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('index');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
-// Route::get('/about', function () {
-//     $nama = 'Hanan Hanafi';
-//     return view('about', ['nama' => $nama]);
-// });
+Route::get('/firstpage', function () {
+    return view('pagewan');
+});
 
-Route::get('/', 'PagesController@home');
-Route::get('/about', 'PagesController@about');
-Route::get('/dashboard', 'PagesController@dashboard');
+Auth::routes();
 
-Route::get('/mahasiswa', 'MahasiswaController@index');
+Route::group(['middleware'=>['auth']], function(){
 
-Route::get('info', function() { phpinfo(); });
+    Route::get('/dashboard', 'DashboardController@index');
+    Route::get('/add', 'DashboardController@add');
+    
+    Route::get('/kategori', 'KategoriController@index');
+    Route::post('/kategori/add','KategoriController@store')->name('kategoriAdd');
+    Route::get('/kategori/edit/{id}','KategoriController@edit')->name('kategoriEdit');
+    Route::post('/kategori/update','KategoriController@update')->name('kategoriUpdate');
+    Route::get('/kategori/delete/{id}','KategoriController@destroy')->name('kategoriDelete');
+    Route::get('/add', 'DashboardController@add');
+    
+    Route::get('/produk', 'ProdukController@index');
+    Route::post('/produk/add','ProdukController@store')->name('produkAdd');
+    Route::get('/produk/edit/{id}','ProdukController@edit')->name('produkEdit');
+    Route::post('/produk/update','ProdukController@update')->name('produkUpdate');
+    Route::get('/produk/delete/{id}','ProdukController@destroy')->name('produkDelete');
+});
 
-Route::resource('/categories','CategoryController');
 
+
+
+
+Route::get('/home', 'HomeController@index')->name('home');

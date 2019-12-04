@@ -11,37 +11,25 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::get('/firstpage', function () {
-    return view('pagewan');
-});
+Route::get('/', 'HomeController@index');
 
 Auth::routes();
 
-Route::group(['middleware'=>['auth']], function(){
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/dashboard', 'HomeController@dashboard');
 
-    Route::get('/dashboard', 'DashboardController@index');
-    Route::get('/add', 'DashboardController@add');
-    
-    Route::get('/kategori', 'KategoriController@index');
-    Route::post('/kategori/add','KategoriController@store')->name('kategoriAdd');
-    Route::get('/kategori/edit/{id}','KategoriController@edit')->name('kategoriEdit');
-    Route::post('/kategori/update','KategoriController@update')->name('kategoriUpdate');
-    Route::get('/kategori/delete/{id}','KategoriController@destroy')->name('kategoriDelete');
-    Route::get('/add', 'DashboardController@add');
-    
-    Route::get('/produk', 'ProdukController@index');
-    Route::post('/produk/add','ProdukController@store')->name('produkAdd');
-    Route::get('/produk/edit/{id}','ProdukController@edit')->name('produkEdit');
-    Route::post('/produk/update','ProdukController@update')->name('produkUpdate');
-    Route::get('/produk/delete/{id}','ProdukController@destroy')->name('produkDelete');
+    Route::get('/category', 'CategoryController@index');
+    Route::post('/category/add', 'CategoryController@store')->name('categoryAdd');
+    Route::get('/category/edit/{id}', 'CategoryController@edit')->name('categoryEdit');
+    Route::post('/category/update', 'CategoryController@update')->name('categoryUpdate');
+    Route::get('/category/delete/{id}', 'CategoryController@destroy')->name('categoryDelete');
+
+    Route::get('/article', 'ArticleController@index');
+    Route::post('/article/add', 'ArticleController@store')->name('articleAdd');
+    Route::get('/article/edit/{id}', 'ArticleController@edit')->name('articleEdit');
+    Route::post('/article/update', 'ArticleController@update')->name('articleUpdate');
+    Route::get('/article/delete/{id}', 'ArticleController@destroy')->name('articleDelete');
 });
 
-
-
-
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/{id}', 'HomeController@detail');

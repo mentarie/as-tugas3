@@ -14,7 +14,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        //    
+        $data = Category::all();
+        return view('admin.category')->with('categories', $data);
     }
 
     /**
@@ -24,7 +26,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        //
     }
 
     /**
@@ -35,10 +37,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $item = new Category;
-        $item->name = $request->name;
-        $item->save();
-        print_r("Berhasil disimpan");
+        //
+        Category::updateOrCreate(
+            ['id' => $request->id],
+            ['name' => $request->name]
+        );
+        return redirect("/category")->with('success', 'Category saved successfully');
     }
 
     /**
@@ -60,8 +64,10 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $item = Category::find($id);
-        return view('categories.edit',['item'=>$item]);
+        //
+        $category = Category::find($id);
+
+        return response()->json($category);
     }
 
     /**
@@ -73,10 +79,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $item = Category::find($id);
-        $item->name = $request->name;
-        $item->save();
-        print_r("Berhasil disimpan");
+        //
     }
 
     /**
@@ -88,5 +91,9 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
+        $category = Category::find($id);
+        $category->delete();
+
+        return redirect("/category")->with('success', 'Category deleted successfully');
     }
 }
